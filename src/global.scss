@@ -24,3 +24,22 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+body.scanner-active {
+  --background: transparent;
+
+  ion-modal {
+    --background: transparent;
+  }
+}
+
+// NOTE: Override dark scheme settings from "theme/variables.scss" file
+@media (prefers-color-scheme: dark) {
+  body.scanner-active {
+    --ion-background-color: transparent;
+  
+    ion-modal {
+      --ion-background-color: transparent;
+    }
+  }
+}

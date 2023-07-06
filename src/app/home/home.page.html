@@ -8,7 +8,11 @@
 
 <ion-content [fullscreen]="true">
   <div id="container" *ngIf="!scannerActive">
-    <ion-button id="open-modal">Scan QR</ion-button>
+    <ion-item>
+      <ion-input label="Barcode Result" placeholder="Serial Number" [value]="scanResult" readonly></ion-input>
+    </ion-item>
+    <ion-button [routerLink]="['scanner']">Scan QR (w/page)</ion-button>
+    <ion-button id="open-modal">Scan QR (w/modal)</ion-button>
   </div>
 
   <ion-modal trigger="open-modal" (willPresent)="onWillPresent()" (didPresent)="onDidPresent()" (willDismiss)="onWillDismiss()">
@@ -18,7 +22,7 @@
           <ion-buttons slot="start">
             <ion-button (click)="cancel()">Cancel</ion-button>
           </ion-buttons>
-          <ion-title>Welcome</ion-title>
+          <ion-title>Modal Scanner</ion-title>
         </ion-toolbar>
       </ion-header>
       <ion-content class="ion-padding">

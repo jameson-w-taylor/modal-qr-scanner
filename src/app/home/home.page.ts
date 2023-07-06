@@ -1,4 +1,5 @@
 import { Component, Inject, Renderer2, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
 import { IonModal } from '@ionic/angular';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
@@ -10,11 +11,20 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 })
 export class HomePage {
   @ViewChild(IonModal) modal?: IonModal;
+  scanResult?: string;
   scannerActive: boolean = false;
 
-  constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2) {}
+  constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, private route: ActivatedRoute) {}
+
+  ionViewDidEnter() {
+    this.scanResult = undefined;
+    this.route.queryParams.subscribe(params => {
+      this.scanResult = params['barcode'];
+    });
+  }
 
   async onWillPresent() {
+    this.scanResult = undefined;
     // NOTE: Make sure to always grant permission when testing this (only happy path is accounted for)
     await BarcodeScanner.prepare();
     await BarcodeScanner.checkPermission({ force: true });
@@ -30,7 +40,7 @@ export class HomePage {
     // Scan
     const result = await BarcodeScanner.startScan();
     if (result.hasContent) {
-      console.log(result.content);
+      this.scanResult = result.content;
     }
     this.modal?.dismiss(null, 'scanner');
   }
